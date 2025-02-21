@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -361,7 +362,7 @@
         </div>
     </section>
 
-    <section class="search-bar">
+<section class="search-bar">
     <div class="container">
         <form action="/searchProducts" method="GET">
             <input type="text" name="searchInput" id="searchInput" 
@@ -394,7 +395,7 @@
 </section>
 
 
-    <div class="button-group">
+<div class="button-group">
 	    <button class="btn-action" onclick="window.location.href='/eCart/allProducts'">
 	        <i class="fas fa-search"></i> Search All
 	    </button>
@@ -409,9 +410,9 @@
 		            Remove Items
 		        </button>
 		    </c:if>
-	</div>
+</div>
     
-	<section class="products">
+<section class="products">
     <div class="container">
         <h2>Featured Products</h2>
         <form action="/expensiveProducts" method="POST">
@@ -427,6 +428,9 @@
             <c:if test="${not empty topThreeProducts}">
                 <c:forEach var="product" items="${topThreeProducts}">
                     <div class="product-item">
+                    <div class="product-image-container">
+                    <img src=${product.productImage} class="product-image"/>
+                    </div>
                         <h3>${product.productName}</h3>
                         <p>Rs. ${product.productPrice}</p>
                         <input type="hidden" name="productId" value="${product.productId}">

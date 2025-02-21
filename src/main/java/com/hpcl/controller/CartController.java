@@ -48,7 +48,7 @@ public class CartController {
         @RequestParam(name = "productName", required = false) String productName,
         @RequestParam(name = "productType", required = false) String productType,
         @RequestParam(name = "productPrice", required = false) String productPrice,
-        @RequestParam(name = "productPrice", required = false) String productImage,
+        @RequestParam(name = "productImage", required = false) byte[] productImage,
 
         
         Model model, HttpSession session, RedirectAttributes rAttr) {
@@ -68,22 +68,31 @@ public class CartController {
         return "redirect:/viewCart";
     }
     @PostMapping("/removeFromCart")
-    public String removeFromCart(
-            @RequestParam(name = "productId", required = false) String productId,
-            Model model, HttpSession session, RedirectAttributes rAttr) {
-        
+    public String removeFromCart(@RequestParam(name = "productId", required = false) String productId,
+                                 Model model, HttpSession session, RedirectAttributes rAttr) {
         try {
-            Map<String, ProductModel> cart = (Map<String, ProductModel>) session.getAttribute("cart");
+            Map<Integer, ProductModel> cart = (Map<Integer, ProductModel>) session.getAttribute("cart");
+            
             if (cart != null && !cart.isEmpty()) {
-                cart.remove(productId);
-                session.setAttribute("cart", cart);
+                Integer id = Integer.parseInt(productId);
+                if (cart.containsKey(id)) {
+                    cart.remove(id);
+                    session.setAttribute("cart", cart);
+                    rAttr.addFlashAttribute("message", "Product removed successfully");
+                } else {
+                    rAttr.addFlashAttribute("error", "Product not found in cart");
+                }
             }
-              rAttr.addFlashAttribute("message", "Product removed successfully");
-             
         } catch (Exception e) {
             e.printStackTrace();
             return "errorPage";
         }
         return "redirect:/viewCart";
     }
+    
+    @GetMapping("/payment")
+    public String paymentPage() {
+    	return "payment";
+    }
+
 }

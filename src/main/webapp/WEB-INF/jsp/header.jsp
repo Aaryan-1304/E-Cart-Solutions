@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Cart Header</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,27 +16,31 @@
             padding: 0;
         }
 
+        /* HEADER CONTAINER */
         .header {
             background: #28a745;
             color: white;
             padding: 1rem 0;
+            width: 100%;
         }
 
         .header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 80%;
+            width: 90%;
             margin: auto;
         }
 
+        /* LOGO */
         .header .logo {
             font-size: 2rem;
-            font-weight: bolder;
+            font-weight: bold;
             text-decoration: none;
             color: white;
         }
 
+        /* NAVIGATION BAR */
         .header .navbar {
             display: flex;
             align-items: center;
@@ -68,21 +73,20 @@
             transform: scale(1.05);
         }
 
-        .header .user-info {
+        /* CART & USER INFO SECTION */
+        .user-section {
             display: flex;
             align-items: center;
-            flex-direction: column;
-            justify-content: flex-end;
+            gap: 1.5rem;
         }
 
-        .header .user-name {
+        .user-name {
             color: white;
             font-size: 1rem;
             font-weight: bold;
         }
 
-        .header .sign-out {
-            margin-top: 0.5rem;
+        .sign-out {
             color: white;
             text-decoration: none;
             background-color: rgba(255, 255, 255, 0.2);
@@ -91,11 +95,13 @@
             transition: background-color 0.3s ease;
         }
 
-        .header .sign-out:hover {
+        .sign-out:hover {
             background-color: rgba(255, 255, 255, 0.4);
         }
+
+        /* FIX FOR NAVBAR BACKGROUND */
         .navbar {
-            background-color: #28a745; 
+            background-color: #28a745;
         }
     </style>
 </head>
@@ -103,60 +109,56 @@
     <header class="header">
         <div class="container">
             <a href="/eCart/homepage" class="logo">E-Cart Solutions</a>
+            
             <nav class="navbar">
                 <ul class="nav">
                     <li><a href="/eCart/homepage">Home</a></li>
                     <li><a href="/eCart/allProducts">Shop</a></li>
                     <li><a href="/eCart/about">About</a></li>
                     <li><a href="/eCart/contact">Contact</a></li>
-                    <li><a href="#"><i class="fas fa-search" href="${pageContext.request.contextPath}/"></i></a></li>
-                    <li><a href="${pageContext.request.contextPath}/viewCart" class="nav-link">
-                    <i class="fas fa-shopping-cart"></i> Cart
-                </a></li>
-
+                    <li><a href="#"><i class="fas fa-search"></i></a></li>
+                    <li><a href="${pageContext.request.contextPath}/viewCart">
+                        <i class="fas fa-shopping-cart"></i> Cart
+                    </a></li>
                 </ul>
-                <div class="user-info">
-                    <span class="user-name">Welcome, ${sessionScope.loggedInUser}!</span>
-                    <a href="${pageContext.request.contextPath}/logout" class="sign-out">Sign Out</a>
-                </div>
             </nav>
+
+            <div class="user-section">
+                <span class="user-name">Welcome, ${sessionScope.loggedInUser}!</span>
+                <a href="${pageContext.request.contextPath}/logout" class="sign-out">Sign Out</a>
+            </div>
         </div>
     </header>
+
     <script type="text/javascript">
-    // Prevent back button after logout
-    window.onpageshow = function(event) {
-        if (event.persisted) {
-            // Page was loaded from cache (back/forward button)
-            checkSession();
-        }
-    };
-    
-    // Function to check session status
-    function checkSession() {
-        fetch('${pageContext.request.contextPath}/session/check', {
-            method: 'GET',
-            credentials: 'same-origin'
-        })
-        .then(response => response.text())
-        .then(data => {
-            if (data === "No active session found" || data === "Session is invalid") {
-                // Redirect to login page if no valid session
-                window.location.href = '${pageContext.request.contextPath}/userLogin';
+        window.onpageshow = function(event) {
+            if (event.persisted) {
+                checkSession();
             }
-        })
-        .catch(error => {
-            console.error('Error checking session:', error);
-            // Redirect to login page on error
-            window.location.href = '${pageContext.request.contextPath}/userLogin';
-        });
-    }
-    
-    // Disable browser back button after logout
-    history.pushState(null, null, document.URL);
-    window.addEventListener('popstate', function () {
-        history.pushState(null, null, document.URL);
-        checkSession();
-    });
-</script>
+        };
+
+        function checkSession() {
+            fetch('${pageContext.request.contextPath}/session/check', {
+                method: 'GET',
+                credentials: 'same-origin'
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "No active session found" || data === "Session is invalid") {
+                    window.location.href = '${pageContext.request.contextPath}/userLogin';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking session:', error);
+                window.location.href = '${pageContext.request.contextPath}/userLogin';
+            });
+        }
+
+//        history.pushState(null, null, document.URL);
+//        window.addEventListener('popstate', function () {
+//            history.pushState(null, null, document.URL);
+//            checkSession();
+//        });
+    </script>
 </body>
 </html>

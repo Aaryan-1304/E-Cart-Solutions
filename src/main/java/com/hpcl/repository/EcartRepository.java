@@ -19,9 +19,6 @@ public interface EcartRepository extends JpaRepository<EcartModel, Integer> {
     @Query(value = "INSERT INTO user_Info (username, userpassword, usertype) VALUES (:username, :password, :type)", nativeQuery = true)
     void registerUser(@Param("username") String username, @Param("password") String password, @Param("type") String type);
 
-//	public interface UserRepository extends JpaRepository<EcartModel, String> {
-//	    Optional<EcartModel> findByUsername(String username);
-//	}
 
 	@Query(value = "SELECT userpassword FROM user_Info WHERE username=:username", nativeQuery = true)
     String findByUsername(@Param("username") String username);
