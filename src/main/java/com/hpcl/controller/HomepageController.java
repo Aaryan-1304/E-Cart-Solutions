@@ -118,19 +118,22 @@ public class HomepageController {
         return "homepage";
     }
     
-    @RequestMapping("/expensiveProducts")
+    @GetMapping("/expensiveProducts")
+    @PostMapping("/expensiveProducts")
     public String expensiveProduct(Model model) {
-    	try {
-    		List<ProductModel> topThreeProducts = productService.findTop3ExpensiveProducts();
-    		model.addAttribute("topThreeProducts", topThreeProducts);
-    		
-    		if(topThreeProducts.isEmpty()) {
+        try {
+            List<ProductModel> topThreeProducts = productService.findTop3ExpensiveProducts();
+            
+            if(topThreeProducts.isEmpty()) {
                 model.addAttribute("message", "No featured products available at this time.");
-    		}
-    	}catch (Exception e) {
+            } else {
+                model.addAttribute("topThreeProducts", topThreeProducts);
+                model.addAttribute("message", "Showing top featured products");
+            }
+        } catch (Exception e) {
             model.addAttribute("error", "Unable to fetch top products at this time");
         }
-    	return "homepage";
+        return "homepage";
     }
 
     @PostMapping("/removeItemsPage")
@@ -159,6 +162,16 @@ public class HomepageController {
     }
     @RequestMapping("/homepage")
     public String homepage(Model model) {
+        try {
+            List<ProductModel> topThreeProducts = productService.findTop3ExpensiveProducts();
+            model.addAttribute("topThreeProducts", topThreeProducts);
+            
+            if(topThreeProducts.isEmpty()) {
+                model.addAttribute("message", "No featured products available at this time.");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Unable to fetch top products at this time");
+        }
         return "homepage";
     }
 

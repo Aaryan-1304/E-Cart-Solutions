@@ -6,6 +6,8 @@ import com.hpcl.model.ProductModel;
 import com.hpcl.repository.EcartRepository;
 import com.hpcl.repository.ProductRepository;
 
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +33,6 @@ public class ProductService {
 	public ProductModel saveProduct(ProductModel newProduct) {
 		return productRepository.save(newProduct);
 	}
-
 
 	public int removeProduct(String productName) {
 		return productRepository.deleteByProductName(productName);

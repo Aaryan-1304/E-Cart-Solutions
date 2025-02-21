@@ -23,7 +23,7 @@ public interface ProductRepository extends JpaRepository<ProductModel, Integer> 
 	int deleteByProductName(@Param("productName") String productName);
 
 
-	@Query(value = "SELECT * FROM products ORDER BY product_price DESC LIMIT 3", nativeQuery = true)
+	@Query(value = "SELECT * FROM products ORDER BY CAST(product_price AS DECIMAL) DESC LIMIT 3;", nativeQuery = true)
 	List<ProductModel> findTop3ExpensiveProducts();
 
 	

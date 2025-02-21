@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -386,8 +387,9 @@
 	        <i class="fas fa-arrow-left"></i> Continue Shopping
 	    </a>
 	        
-        <a href="${contextPath}/payment" class="continue-checkout">
-        Checkout <i class="fas fa-arrow-right"></i>
+	        <a href="${contextPath}/payment" class="continue-checkout">
+	        Checkout <i class="fas fa-arrow-right"></i>
+	    </a>
     </a>
 </div>
 
