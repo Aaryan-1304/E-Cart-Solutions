@@ -48,7 +48,7 @@ public class CartController {
         @RequestParam(name = "productName", required = false) String productName,
         @RequestParam(name = "productType", required = false) String productType,
         @RequestParam(name = "productPrice", required = false) String productPrice,
-        @RequestParam(name = "productImage", required = false) byte[] productImage,
+        @RequestParam(name = "productImage", required = false) String productImage,
 
         
         Model model, HttpSession session, RedirectAttributes rAttr) {

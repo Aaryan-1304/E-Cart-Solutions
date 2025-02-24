@@ -424,13 +424,12 @@
             <c:if test="${not empty message}">
                 <div class="info-message">${message}</div>
             </c:if>
-            
             <c:if test="${not empty topThreeProducts}">
                 <c:forEach var="product" items="${topThreeProducts}">
                     <div class="product-item">
-                    <div class="product-image-container">
-                    <img src=${product.productImage} class="product-image"/>
-                    </div>
+                    	<div class="product-image-container">
+                    	<img src="<c:url value='/images/${product.productImage}' />" alt="${product.productName}">
+                    	</div>
                         <h3>${product.productName}</h3>
                         <p>Rs. ${product.productPrice}</p>
                         <input type="hidden" name="productId" value="${product.productId}">

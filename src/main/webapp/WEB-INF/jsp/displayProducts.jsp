@@ -50,7 +50,8 @@
         .product-grid {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
+            gap: 20px;
+            justify-content: center;
         }
 
         .product-item {
@@ -61,7 +62,18 @@
             text-align: center;
             margin: 1rem;
             width: 250px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .product-item:hover {
             transform: scale(1.05);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            border-radius: 10px;
         }
 
         .product-item h3 {
@@ -84,17 +96,14 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s ease, transform 0.2s ease;
+            width: 100%;
         }
 
         .product-item button:hover {
             background: #218838;
             transform: scale(1.05);
         }
-        .product-image {
-            width: 200px;
-            height: auto;
-            border-radius: 10px;
-        }
+
         .footer {
             background: #333;
             color: white;
@@ -115,7 +124,7 @@
             <c:when test="${not empty productsList}">
                 <c:forEach var="product" items="${productsList}">
                     <div class="product-item">
-                        <img src="${product.productImage}" class="product-image"/>
+                        <img class="product-image" src="<c:url value='/images/${product.productImage}' />" alt="${product.productName}">
                         <h3>${product.productName}</h3>
                         <p>Type: ${product.productType}</p>
                         <p>Price: ${product.productPrice}</p>

@@ -26,7 +26,7 @@ public class ProductModel {
     private String productName;
 
     @Column(name = "product_image")
-    private byte[] productImage;
+    private String productImage;
     
     // Default Constructor
     public ProductModel() {
@@ -34,7 +34,7 @@ public class ProductModel {
     }
 
     // Parameterized Constructor
-    public ProductModel(String productType, String productPrice, String productName, Integer productId, byte[] productImage) {
+    public ProductModel(String productType, String productPrice, String productName, Integer productId, String productImage) {
         this.productType = productType;
         this.productPrice = productPrice;
         this.productName = productName;
@@ -43,10 +43,10 @@ public class ProductModel {
      
     }
 
-    public byte[] getProductImage() {
+    public String getProductImage() {
 		return productImage;
 	}
-    public void setProductImage(byte[] productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 	// Getters and Setters

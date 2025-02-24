@@ -114,7 +114,7 @@
                 <ul class="nav">
                     <li><a href="/eCart/homepage">Home</a></li>
                     <li><a href="/eCart/allProducts">Shop</a></li>
-                    <li><a href="/eCart/about">About</a></li>
+                    <li><a href="${pageContext.request.contextPath}/about">About</a></li>
                     <li><a href="/eCart/contact">Contact</a></li>
                     <li><a href="#"><i class="fas fa-search"></i></a></li>
                     <li><a href="${pageContext.request.contextPath}/viewCart">
