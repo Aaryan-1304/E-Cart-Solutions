@@ -32,6 +32,7 @@ public class ProductModel {
     public ProductModel() {
         super();
     }
+    private int quantity;
 
     // Parameterized Constructor
     public ProductModel(String productType, String productPrice, String productName, Integer productId, String productImage) {
@@ -40,7 +41,14 @@ public class ProductModel {
         this.productName = productName;
         this.productId = productId;
         this.productImage = productImage;
+        this.quantity = 1;
      
+    }
+    public int getQuantity() {
+    	return quantity;
+    }
+    public void setQuantity(int quantity) {
+    	 this.quantity = quantity;
     }
 
     public String getProductImage() {

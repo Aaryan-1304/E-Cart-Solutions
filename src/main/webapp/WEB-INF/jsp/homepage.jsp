@@ -395,12 +395,11 @@
 </section>
 
 
-<div class="button-group">
-	    <button class="btn-action" onclick="window.location.href='/eCart/allProducts'">
-	        <i class="fas fa-search"></i> Search All
-	    </button>
-    
+<div class="button-group">    
 	        <c:if test="${sessionScope.userRole eq 'admin'}">
+	        	<button class="btn-action" onclick="window.location.href='/eCart/allProducts'">
+	        		<i class="fas fa-search"></i> Search All
+	        	</button>
 		        <button class="btn-action" onclick="window.location.href='/eCart/addItems'">
 		            <i class="fas fa-plus"></i> 
 		            Add Items

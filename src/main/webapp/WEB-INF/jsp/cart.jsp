@@ -7,132 +7,7 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta charset="UTF-8">
-    <title>Shopping Cart</title>
     <style>
-//    body {
-//        font-family: Arial, sans-serif;
-//        margin: 0;
-//        padding: 0;
-//        background-color: #f9f9f9;
-//    }
-//
-//    .navbar {
-//        background-color: #2d8f29;
-//        color: white;
-//        display: flex;
-//        justify-content: center;
-//        align-items: center;
-//        padding: 15px 0;
-//        font-size: 1.5rem;
-//        font-weight: bold;
-//    }
-//
-//    .container {
-//        max-width: 900px;
-//        margin: auto;
-//        padding: 2rem;
-//    }
-//
-//    .cart-header {
-//        text-align: center;
-//        color: #28a745;
-//        font-size: 2rem;
-//        margin-bottom: 1.5rem;
-//    }
-//
-//    .cart-items {
-//        display: flex;
-//        flex-direction: column;
-//        gap: 15px;
-//    }
-//
-//    .cart-item {
-//        display: flex;
-//        justify-content: space-between;
-//        align-items: center;
-//        background: white;
-//        padding: 1.2rem;
-//        border-radius: 8px;
-//        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-//        transition: transform 0.2s;
-//    }
-//
-//    .cart-item:hover {
-//        transform: translateY(-3px);
-//        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-//    }
-//
-//    .cart-item .details {
-//        flex-grow: 1;
-//    }
-//
-//    .cart-item h3 {
-//        margin: 0 0 5px;
-//        font-size: 1.2rem;
-//        color: #333;
-//    }
-//
-//    .cart-item p {
-//        margin: 3px 0;
-//        font-size: 1rem;
-//        color: #555;
-//    }
-//
-//    .remove-btn {
-//        background: #dc3545;
-//        color: white;
-//        border: none;
-//        padding: 8px 12px;
-//        cursor: pointer;
-//        font-size: 1rem;
-//        border-radius: 4px;
-//        transition: background 0.2s;
-//    }
-//
-//    .remove-btn:hover {
-//        background: #c82333;
-//    }
-//
-//    .empty-cart-message {
-//        text-align: center;
-//        padding: 2rem;
-//        color: #666;
-//        font-size: 1.2rem;
-//    }
-//
-//    .total-section {
-//        background: white;
-//        padding: 1rem;
-//        margin-top: 2rem;
-//        text-align: center;
-//        border-radius: 8px;
-//        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-//        font-size: 1.2rem;
-//        font-weight: bold;
-//        color: #28a745;
-//    }
-//
-//    .footer {
-//        background: #333;
-//        color: white;
-//        text-align: center;
-//        padding: 1rem 0;
-//        margin-top: 2rem;
-//    }	
-//
-//    .continue-shopping {
-//        display: block;
-//        text-align: center;
-//        margin-top: 2rem;
-//        font-size: 1rem;
-//        color: #28a745;
-//        text-decoration: none;
-//        font-weight: bold;
-//    }
-//
-//    .continue-shopping:hover {
-//        text-decoration: underline;
-//    }
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -321,9 +196,6 @@
 
 <%@ include file="header.jsp" %>
 
-<div class="navbar">
-    Shopping Cart
-</div>
 
 <div class="container">
     <h2 class="cart-header">Your Shopping Cart</h2>
@@ -341,32 +213,42 @@
     <c:choose>
         <c:when test="${not empty cart}">
             <div class="cart-items">
-                <c:forEach var="product" items="${cart}">
-                    <div class="cart-item">
-                        <div class="product-image-container">
-                        <img src="${product.productImage}" class="product-image"/>
-                        </div>
-                        <div class="details">
-                            <div class="product-info">
-                                <p>ID: ${product.productId}</p>
-                                <p>Type: ${product.productType}</p>
-                                <p>Price: ₹${product.productPrice}</p>
-                            </div>
-                            <form method="POST" action="${contextPath}/removeFromCart">
+            <c:forEach var="product" items="${cart}">
+            <div class="cart-item">
+                <div class="product-image-container">
+            	<img src="<c:url value='/images/${product.productImage}' />" alt="${product.productName}">
+                </div>
+                <div class="details">
+                    <div class="product-info">
+                        <p>ID: ${product.productId}</p>
+                        <p>Type: ${product.productType}</p>
+                        <p>Price: ₹${product.productPrice}</p>
+                        
+                        <div class="quantity-controls">
+                            <form method="POST" action="${contextPath}/updateQuantity">
                                 <input type="hidden" name="productId" value="${product.productId}">
-                                <button type="submit" class="remove-btn">
-                                    <i class="fas fa-trash"></i> Remove
-                                </button>
+                                <button type="submit" name="action" value="decrease" class="quantity-btn">-</button>
+                                <span>${product.quantity}</span>
+                                <button type="submit" name="action" value="increase" class="quantity-btn">+</button>
                             </form>
                         </div>
                     </div>
-                </c:forEach>
+
+                    <form method="POST" action="${contextPath}/removeFromCart">
+                        <input type="hidden" name="productId" value="${product.productId}">
+                        <button type="submit" class="remove-btn">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </c:forEach>
             </div>
 
             <div class="total-section">
                 <c:set var="totalPrice" value="0" />
                 <c:forEach var="product" items="${cart}">
-                    <c:set var="totalPrice" value="${totalPrice + product.productPrice}" />
+                    <c:set var="totalPrice" value="${totalPrice + (product.productPrice * product.quantity)}" />
                 </c:forEach>
                 <p>Total Items: ${cart.size()}</p>
                 <p>Total Price: ₹${totalPrice}</p>
@@ -387,7 +269,7 @@
 	        <i class="fas fa-arrow-left"></i> Continue Shopping
 	    </a>
 	        
-	        <a href="${contextPath}/payment" class="continue-checkout">
+	    <a href="${contextPath}/payment" class="continue-checkout">
 	        Checkout <i class="fas fa-arrow-right"></i>
 	    </a>
     </a>

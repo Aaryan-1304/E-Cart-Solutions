@@ -43,27 +43,8 @@ public class ProductService {
     public List<ProductModel> searchProduct(String word) {
         return productRepository.searchProduct(word);
     }
-    
-//    public void saveProductWithImage(ProductModel product, byte[] imageData) {
-//        if(imageData != null) {
-//            String base64Image = Base64.getEncoder().encodeToString(imageData);
-//            product.setProductImage(base64Image);
-//        }
-//        productRepository.save(product);
-//    }
-//    
-//    public ProductDTO getProduct(Integer productId) {
-//        ProductModel product = productRepository.findById(productId)
-//                .orElseThrow(() -> new RuntimeException("Product not found"));
-//        
-//        ProductDTO productDTO = new ProductDTO();
-//        productDTO.setId(product.getProductId());
-//        productDTO.setName(product.getProductName());
-//        productDTO.setPrice(product.getProductPrice());
-//        
-//        // The image is already Base64 encoded, so just pass it through
-//        productDTO.setImageBase64(product.getProductImageBase64());
-//        
-//        return productDTO;
-//    }
+
+	public Optional<ProductModel> findProductById(Integer productId) {
+		return productRepository.findById(productId);
+	}
 }

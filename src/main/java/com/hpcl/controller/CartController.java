@@ -49,7 +49,6 @@ public class CartController {
         @RequestParam(name = "productType", required = false) String productType,
         @RequestParam(name = "productPrice", required = false) String productPrice,
         @RequestParam(name = "productImage", required = false) String productImage,
-
         
         Model model, HttpSession session, RedirectAttributes rAttr) {
 
@@ -58,8 +57,13 @@ public class CartController {
             if (cart == null) {
                 cart = new HashMap<>();
             }
-            ProductModel product = new ProductModel(productType, productPrice, productName, productId, productImage);
-            cart.put(productId, product);
+            if(cart.containsKey(productId)) {
+                ProductModel existingProduct = cart.get(productId);
+                existingProduct.setQuantity(existingProduct.getQuantity() + 1);
+            }else {
+                ProductModel product = new ProductModel(productType, productPrice, productName, productId, productImage);
+                cart.put(productId, product);
+            }
             session.setAttribute("cart", cart);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,6 +71,38 @@ public class CartController {
         }
         return "redirect:/viewCart";
     }
+    
+    @PostMapping("/updateQuantity")
+    public String updateQuantity(
+        @RequestParam(name = "productId")Integer productId,
+        @RequestParam(name = "action")String action,
+        HttpSession session, RedirectAttributes rAttr) {
+        try {
+            Map<Integer, ProductModel> cart = (Map<Integer, ProductModel>)session.getAttribute("cart");
+            if(cart == null || !cart.containsKey(productId)) {
+                rAttr.addFlashAttribute("error", "Product not found in cart");
+                return "redirect:/viewCart";
+            }
+            ProductModel product = cart.get(productId);
+            
+            if("increase".equals(action)) {
+                product.setQuantity(product.getQuantity() + 1);
+            }else {
+                if(product.getQuantity()>1) {
+                    product.setQuantity(product.getQuantity() - 1);
+                }else {
+                    cart.remove(productId);
+                }
+            }
+            session.setAttribute("cart", cart);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return "errorPage";
+        }
+        return "redirect:/viewCart";
+    }
+    
     @PostMapping("/removeFromCart")
     public String removeFromCart(@RequestParam(name = "productId", required = false) String productId,
                                  Model model, HttpSession session, RedirectAttributes rAttr) {
@@ -92,7 +128,6 @@ public class CartController {
     
     @GetMapping("/payment")
     public String paymentPage() {
-    	return "payment";
+        return "payment";
     }
-
 }

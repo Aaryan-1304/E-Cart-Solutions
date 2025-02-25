@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -181,7 +183,43 @@ public class HomepageController {
     
     @RequestMapping("/contact")
     public String contact() {
-        return "contact";
+        return "contact"	;
     }
+    
+    @GetMapping("/updateItems")
+    public String showUpdateItems(@RequestParam("productId") Integer productId,
+                                  @RequestParam("productName") String productName,
+                                  @RequestParam("productType") String productType,
+                                  @RequestParam("productPrice") String productPrice,
+                                  @RequestParam("productImage") String productImage,
+                                  Model model) {
+        ProductModel product = new ProductModel();
+        product.setProductId(productId);
+        product.setProductName(productName);
+        product.setProductType(productType);
+        product.setProductPrice(productPrice);
+        product.setProductImage(productImage);
+        
+        model.addAttribute("product", product);
+
+        List<String> productTypes = Arrays.asList("Electronics", "Clothing", "Home", "Books");
+        model.addAttribute("productTypes", productTypes);
+        return "updateItems"; 
+    }
+    @GetMapping("/form")
+    public String showForm(Model model) {
+        List<String> productTypes = List.of(
+            "Electronics", "Clothing", "Accessories", "Toys", 
+            "Books", "Footwear", "Home Appliances", "Groceries"
+        );
+        model.addAttribute("productTypes", productTypes);
+
+        ProductModel product = new ProductModel();
+        product.setProductType("");  
+        model.addAttribute("product", product);
+
+        return "form";
+    }
+
 
 }

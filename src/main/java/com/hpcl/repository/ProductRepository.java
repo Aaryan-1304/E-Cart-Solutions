@@ -1,6 +1,7 @@
 package com.hpcl.repository;
 import java.util.List;
 //import com.hpcl.model.productModel;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,6 +31,8 @@ public interface ProductRepository extends JpaRepository<ProductModel, Integer> 
 	@Query(value = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER(CONCAT('%', :keyword, '%'))", nativeQuery = true)
 	List<ProductModel> searchProduct(@Param("keyword")String word);
 
+	@Query(value = "SELECT p FROM ProductModel p WHERE p.productId = :productId", nativeQuery = true)
+	Optional<ProductModel> findProductById(@Param("productId") Integer productId);
 }
 	
 	
