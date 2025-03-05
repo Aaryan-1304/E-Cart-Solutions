@@ -310,7 +310,6 @@
     <div class="payment-section">
     <h1 class="payment-title">Select Payment Method</h1>
     
-    <!-- Credit/Debit Card Section -->
     <button class="payment-option" onclick="showPaymentForm('card-form')">💳 Credit/Debit Card</button>
     <div id="card-form" class="payment-form">
         <form onsubmit="return handlePayment(event)">
@@ -388,7 +387,7 @@
                 <label for="upi-id">UPI ID</label>
                 <input type="text" id="upi-id" placeholder="username@upi" required>
             </div>
-            <button type="submit" class="submit-button">Pay via UPI</button>
+            <button type="submit" class="submit-button" >Pay via UPI</button>
         </form>
     </div>
 

@@ -110,39 +110,52 @@
     <section class="updateProducts">
         <h2>Update Product Details</h2>
         <form action="${pageContext.request.contextPath}/updateProduct" method="post">
-            <div class="updateProducts-grid">
-                <img src="<c:url value='src/main/resources/images/${product.productImage}' />" alt="${product.productName}">
-                <label for="productId">Product ID:</label>
-                <input type="text" id="productId" name="productId" value="${product.productId}" readonly>
-                
-                <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" value="${product.productName}" readonly>
-                
-                <label for="productType">Product Type:</label>
-                <select id="productType" name="productType">
-	                <c:forEach items="${productTypes}" var="type">
-	                    <option value="${type}" ${type eq product.productType ? 'selected' : ''}>
-	                        ${type}
-	                    </option>
-	                </c:forEach>
-                </select>
-
-
-                
-                <label for="productPrice">Product Price:</label>
-                <input type="text" id="productPrice" name="productPrice" value="${product.productPrice}">
-                
-                <input type="hidden" name="productImage" value="${product.productImage}">
-                
-                <div class="button-group">
-                    <button type="submit">Update Product</button>
-                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/allProducts'">Cancel</button>
-                </div>
+        <div class="updateProducts-grid">
+            <img src="<c:url value='/resources/images/${product.productImage}' />" alt="${product.productName}">
+            
+            <label for="productId">Product ID:</label>
+            <input type="text" id="productId" name="productId" value="${product.productId}" readonly>
+            
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="productName" value="${product.productName}" readonly>
+            
+            <label for="productType">Product Type:</label>
+            <select id="productType" name="productType">
+                <option value="electronics" ${'electronics' eq product.productType ? 'selected' : ''}>Electronics</option>
+                <option value="footwear" ${'footwear' eq product.productType ? 'selected' : ''}>Footwear</option>
+                <option value="clothing" ${'clothing' eq product.productType ? 'selected' : ''}>Clothing</option>
+                <option value="accessories" ${'accessories' eq product.productType ? 'selected' : ''}>Accessories</option>
+                <option value="home appliances" ${'home appliances' eq product.productType ? 'selected' : ''}>Home Appliances</option>
+                <option value="groceries" ${'groceries' eq product.productType ? 'selected' : ''}>Groceries</option>
+                <option value="books" ${'books' eq product.productType ? 'selected' : ''}>Books</option>
+                <option value="toys" ${'toys' eq product.productType ? 'selected' : ''}>Toys</option>
+            </select>
+            
+            <label for="productPrice">Product Price:</label>
+            <input type="text" id="productPrice" name="productPrice" value="${product.productPrice}">
+            
+            <input type="hidden" name="productImage" value="${product.productImage}">
+            
+            <div class="button-group">
+                <button type="submit">Update Product</button>
+                <button type="button" onclick="location.href='${pageContext.request.contextPath}/allProducts'">Cancel</button>
             </div>
-        </form>
+
+            <c:if test="${not empty message}">
+                <div id="updateMessage" style="color: green; margin-top: 10px;">
+                    ${message}
+                </div>
+            </c:if>
+        </div>
+    </form>
         <div class="back-to-home">
             <a href="allProducts">Back to Search Products</a>
         </div>
     </section>
+    <script>
+    function showUpdateMessage() {
+        document.getElementById("updateMessage").innerText = "Product updated successfully!";
+    }
+    </script>
 </body>
 </html>

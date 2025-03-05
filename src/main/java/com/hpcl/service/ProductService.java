@@ -47,4 +47,61 @@ public class ProductService {
 	public Optional<ProductModel> findProductById(Integer productId) {
 		return productRepository.findById(productId);
 	}
+
+	public void updateProduct(ProductModel updatedProduct) {
+		Optional<ProductModel> existingProduct = productRepository.findById(updatedProduct.getProductId());
+		if(existingProduct.isPresent()) {
+			ProductModel product = existingProduct.get();
+			product.setProductName(updatedProduct.getProductName());
+			product.setProductType(updatedProduct.getProductType());
+			product.setProductPrice(updatedProduct.getProductPrice());
+			product.setProductImage(updatedProduct.getProductImage());
+			productRepository.save(product);
+		}
+	}
+	
+	public class InsufficientInventoryException extends RuntimeException {
+	    
+	    public InsufficientInventoryException(String message) {
+	        super(message);
+	    }
+	    
+	    public InsufficientInventoryException(String message, Throwable cause) {
+	        super(message, cause);
+	    }
+	}
+	
+	public void productQuantity(ProductModel updatedProduct) {
+	    Optional<ProductModel> existingProductOptional = productRepository.findById(updatedProduct.getProductId());
+	    
+	    if (existingProductOptional.isPresent()) {
+	        ProductModel existingProduct = existingProductOptional.get();
+	        int quantityAtCheckout = updatedProduct.getQuantity();
+	        int quantityInDb = existingProduct.getQuantity();
+	        
+	        if (quantityInDb >= quantityAtCheckout) {
+	            existingProduct.setQuantity(quantityInDb - quantityAtCheckout);
+	            productRepository.save(existingProduct);
+	        } else {
+	            throw new InsufficientInventoryException("Not enough inventory available for product: " + existingProduct.getProductId());
+	        }
+	    }
+	}
+
+	public boolean updateProductQuantity(List<Integer> productIds, List<Integer> quantities) {
+	    for (int i = 0; i < productIds.size(); i++) {
+	        int productId = productIds.get(i);
+	        int quantityToReduce = quantities.get(i);
+
+	        ProductModel product = productRepository.findById(productId).orElse(null);
+	        if (product != null && product.getQuantity() >= quantityToReduce) {
+	            product.setQuantity(product.getQuantity() - quantityToReduce);
+	            productRepository.save(product);
+	        } else {
+	            return false;
+	        }
+	    }
+	    return true; 
+	}
+
 }

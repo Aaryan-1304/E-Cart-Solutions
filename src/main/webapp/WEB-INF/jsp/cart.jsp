@@ -225,7 +225,7 @@
                         <p>Price: ₹${product.productPrice}</p>
                         
                         <div class="quantity-controls">
-                            <form method="POST" action="${contextPath}/updateQuantity">
+                            <form id="updateDB" method="POST" action="${contextPath}/updateQuantity">
                                 <input type="hidden" name="productId" value="${product.productId}">
                                 <button type="submit" name="action" value="decrease" class="quantity-btn">-</button>
                                 <span>${product.quantity}</span>
@@ -269,15 +269,28 @@
 	        <i class="fas fa-arrow-left"></i> Continue Shopping
 	    </a>
 	        
-	    <a href="${contextPath}/payment" class="continue-checkout">
-	        Checkout <i class="fas fa-arrow-right"></i>
-	    </a>
+	        <form id="checkoutForm" method="POST" action="${contextPath}/checkout">
+		        <c:forEach var="product" items="${cart}">
+		            <input type="hidden" name="productId" value="${product.productId}">
+		            <input type="hidden" name="quantity" value="${product.quantity}">
+		        </c:forEach>
+		        <button type="submit" class="continue-checkout">
+		            Checkout <i class="fas fa-arrow-right"></i>
+		        </button>
+		    </form>
+
     </a>
 </div>
 
 <div class="footer">
     &copy; 2025 E-Cart Solutions. All rights reserved.
 </div>
-
+<script>
+	function updatedDB() {
+		function checkout() {
+		    document.getElementById("checkoutForm").submit();
+		}
+	}
+</script>
 </body>
 </html>

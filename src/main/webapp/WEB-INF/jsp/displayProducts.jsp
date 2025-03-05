@@ -119,43 +119,45 @@
     All Products
 </div>
 <section class="products">
-
-<div class="product-grid">
-  <c:choose>
-    <c:when test="${not empty productsList}">
-      <c:forEach var="product" items="${productsList}">
-        <div class="product-item">
-          <img class="product-image" src="<c:url value='/images/${product.productImage}' />" alt="${product.productName}">
-          <h3>${product.productName}</h3>
-          <p>Type: ${product.productType}</p>
-          <p>Price: ${product.productPrice}</p>
-          <form action="${pageContext.request.contextPath}/updateItems" method="get">
-            <input type="hidden" name="productId" value="${product.productId}">
-            <input type="hidden" name="productName" value="${product.productName}">
-            <input type="hidden" name="productType" value="${product.productType}">
-            <input type="hidden" name="productPrice" value="${product.productPrice}">
-            <input type="hidden" name="productImage" value="${product.productImage}">
-            <button type="submit" href = "/eCart/updateItems">Edit</button>
-          </form>
-        </div>
-      </c:forEach>
-    </c:when>
-    <c:otherwise>
-      <p>No products available.</p>
-    </c:otherwise>
-  </c:choose>
-</div>
+    <div class="product-grid">
+        <c:choose>
+            <c:when test="${not empty productsList}">
+                <c:forEach var="product" items="${productsList}">
+                    <div class="product-item">
+                        <img class="product-image" src="<c:url value='/images/${product.productImage}' />" alt="${product.productName}">
+                        <h3>${product.productName}</h3>
+                        <p>Type: ${product.productType}</p>
+                        <p>Price: ${product.productPrice}</p>
+                        <c:choose>
+                            <c:when test="${userRole == 'admin'}">
+                                <form action="${pageContext.request.contextPath}/updateItems" method="get">
+                                    <input type="hidden" name="productId" value="${product.productId}">
+                                    <input type="hidden" name="productName" value="${product.productName}">
+                                    <input type="hidden" name="productType" value="${product.productType}">
+                                    <input type="hidden" name="productPrice" value="${product.productPrice}">
+                                    <input type="hidden" name="productImage" value="${product.productImage}">
+                                    <button type="submit">Edit</button>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <form action="${pageContext.request.contextPath}/addToCart" method="post">
+                                    <input type="hidden" name="productId" value="${product.productId}">
+                                    <input type="hidden" name="productName" value="${product.productName}">
+                                    <input type="hidden" name="productType" value="${product.productType}">
+                                    <input type="hidden" name="productPrice" value="${product.productPrice}">
+                                    <input type="hidden" name="productImage" value="${product.productImage}">
+                                    <button type="submit">Add to Cart</button>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <p>No products available.</p>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </section>
-
-//<script>
-//    function getFormDetails(productImage, productId, productName, productType, productPrice) {
-//        document.getElementById("productImage").value = productImage;
-//        document.getElementById("productId").value = productId;
-//        document.getElementById("productName").value = productName;
-//        document.getElementById("productType").value = productType;
-//        document.getElementById("productPrice").value = productPrice;  
-//        document.getElementById("formName").submit();
-//    }
-//</script>
 </body>
 </html>

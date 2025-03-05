@@ -32,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,7 +97,7 @@ public class HomepageController {
             logger.error("Error adding product: ", e);
             model.addAttribute("error", "Error adding product: " + e.getMessage());
         }       
-        return "addItemsPage";
+        return "homepage";
     }
     
     @RequestMapping("/searchProducts")
@@ -138,7 +139,7 @@ public class HomepageController {
         return "homepage";
     }
 
-    @PostMapping("/removeItemsPage")
+    @GetMapping("/removeItemsPage")
     public String removeProduct(@RequestParam(name = "productName", required = false) String productName,
                                  Model model, RedirectAttributes redirectAttributes) {
         try {
@@ -186,6 +187,13 @@ public class HomepageController {
         return "contact"	;
     }
     
+    @PostMapping("/updateProduct")
+    public String updateProduct(@ModelAttribute ProductModel product, RedirectAttributes redirectAttributes) {
+        productService.updateProduct(product); 
+        redirectAttributes.addFlashAttribute("message", "Product updated successfully!");
+        return "redirect:/allProducts"; // Redirect after updating
+    }
+
     @GetMapping("/updateItems")
     public String showUpdateItems(@RequestParam("productId") Integer productId,
                                   @RequestParam("productName") String productName,
@@ -193,19 +201,23 @@ public class HomepageController {
                                   @RequestParam("productPrice") String productPrice,
                                   @RequestParam("productImage") String productImage,
                                   Model model) {
+        
         ProductModel product = new ProductModel();
         product.setProductId(productId);
         product.setProductName(productName);
         product.setProductType(productType);
         product.setProductPrice(productPrice);
         product.setProductImage(productImage);
-        
+
         model.addAttribute("product", product);
 
-        List<String> productTypes = Arrays.asList("Electronics", "Clothing", "Home", "Books");
+        List<String> productTypes = Arrays.asList("Electronics", "Clothing", "Accessories", "Toys", 
+                "Books", "Footwear", "Home Appliances", "Groceries");
         model.addAttribute("productTypes", productTypes);
-        return "updateItems"; 
+
+        return "updateItems";
     }
+    
     @GetMapping("/form")
     public String showForm(Model model) {
         List<String> productTypes = List.of(

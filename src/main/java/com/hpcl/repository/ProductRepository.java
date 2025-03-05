@@ -33,6 +33,14 @@ public interface ProductRepository extends JpaRepository<ProductModel, Integer> 
 
 	@Query(value = "SELECT p FROM ProductModel p WHERE p.productId = :productId", nativeQuery = true)
 	Optional<ProductModel> findProductById(@Param("productId") Integer productId);
+	
+	@Modifying
+	@Query(value = "UPDATE ProductModel p SET p.productName = :name, p.productPrice = :price WHERE p.productId = :id, ORDER BY p.productId ASC", nativeQuery =  true)
+	void updateProduct(@Param("id")Integer id, @Param("name")String name, @Param("price")String price);
+	
+	@Query("SELECT p FROM ProductModel p ORDER BY p.productId ASC")
+	List<ProductModel> findAllSorted();
+
 }
 	
 	

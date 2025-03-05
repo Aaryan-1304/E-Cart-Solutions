@@ -398,7 +398,7 @@
 <div class="button-group">    
 	        <c:if test="${sessionScope.userRole eq 'admin'}">
 	        	<button class="btn-action" onclick="window.location.href='/eCart/allProducts'">
-	        		<i class="fas fa-search"></i> Search All
+	        		<i class="fas fa-search"></i> Edit Items
 	        	</button>
 		        <button class="btn-action" onclick="window.location.href='/eCart/addItems'">
 		            <i class="fas fa-plus"></i> 
@@ -440,12 +440,13 @@
     </div>
 </section>
 
-
+<div>
     <footer class="footer">
         <div class="container">
             <p>&copy; 2025 E-Cart Solutions. All rights reserved.</p>
         </div>
     </footer>
+<div>
 	  </body>
 </html>
 

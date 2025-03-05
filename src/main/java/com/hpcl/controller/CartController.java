@@ -1,8 +1,11 @@
-package com.hpcl.controller;
+ 	package com.hpcl.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import jakarta.servlet.http.HttpSession;
+
+import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -14,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hpcl.model.ProductModel;
+import com.hpcl.service.ProductService;
 
 @Controller
 @RequestMapping("/")  // Base request mapping
 public class CartController {
-    
+	@Autowired
+	private ProductService productService;
     @Autowired
     Environment env;
     
@@ -130,4 +135,37 @@ public class CartController {
     public String paymentPage() {
         return "payment";
     }
+    
+    @PostMapping("/checkout")
+    public String checkout(@RequestParam List<Integer> productId, @RequestParam List<Integer> quantity, RedirectAttributes redirectAttributes) {
+        boolean success = productService.updateProductQuantity(productId, quantity);
+        if (success) {
+            redirectAttributes.addFlashAttribute("message", "Checkout successful, stock updated.");
+            return "redirect:/payment";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Checkout failed, insufficient stock.");
+            return "redirect:/cart";
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
