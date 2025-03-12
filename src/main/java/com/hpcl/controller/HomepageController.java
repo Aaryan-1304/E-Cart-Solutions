@@ -99,7 +99,6 @@ public class HomepageController {
         }       
         return "homepage";
     }
-    
     @RequestMapping("/searchProducts")
     public String searchProducts(@RequestParam("searchInput") String query ,Model model) {
         try {

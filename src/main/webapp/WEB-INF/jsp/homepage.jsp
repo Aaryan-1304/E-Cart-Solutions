@@ -362,33 +362,36 @@
         </div>
     </section>
 
-<section class="search-bar">
+    <section class="search-bar">
     <div class="container">
         <form action="/searchProducts" method="GET">
             <input type="text" name="searchInput" id="searchInput" 
-                   value="${searchInput}" placeholder="Search for products...">
+                   value="${query}" placeholder="Search for products...">
             <button type="submit">
                 <i class="fas fa-search"></i>
             </button>
         </form>
-        
+
         <div class="search-results" id="searchResults">
             <c:if test="${not empty error}">
                 <div class="error-message">${error}</div>
             </c:if>
-            
-            <c:if test="${not empty searchMessage}">
-                <div class="info-message">${searchMessage}</div>
-            </c:if>
-            
+
             <c:if test="${not empty searchResults}">
+                <h3>Search Results:</h3>
                 <c:forEach var="product" items="${searchResults}">
                     <div class="product-item">
-                        <h3>${product.productName}</h3>
-                        <p>Type: ${product.productType}</p>
-                        <p>Price: ${product.productPrice}</p>
+                        <h3>${product.name}</h3>
+                        <p>Category: ${product.category}</p>
+                        <p>Price: $${product.price}</p>
+                        <c:if test="${not empty product.image}">
+                            <img src="${product.image}" alt="${product.name}">
+                        </c:if>
                     </div>
                 </c:forEach>
+            </c:if>
+            <c:if test="${empty searchResults && not empty searchInput}">
+                <div class="info-message">No products found matching your search.</div>
             </c:if>
         </div>
     </div>
@@ -431,8 +434,8 @@
                     	</div>
                         <h3>${product.productName}</h3>
                         <p>Rs. ${product.productPrice}</p>
-                        <input type="hidden" name="productId" value="${product.productId}">
-                    </div>
+                        <input type="hidden" name="productId_${product.productId}" value="${product.productId}">
+                   </div>
                 </c:forEach>
             </c:if>
         </div>
@@ -461,4 +464,12 @@ function displayFeaturedProducts() {
 	document.forms[1].action= "displayFeaturedProducts";
 	document.getElementById("featuredProducts").submit();
 	}
+function searchProducts() {
+    document.getElementById("searchForm").submit();
+}
+
+function displayFeaturedProducts() {
+    document.getElementById("featuredProducts").submit();
+}
+
 </script>
