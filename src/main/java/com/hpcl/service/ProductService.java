@@ -7,8 +7,11 @@ import com.hpcl.repository.ProductRepository;
 import EcartDetailsDTO.ProductDTO;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +44,7 @@ public class ProductService {
     }
 
     public List<ProductModel> searchProduct(String word) {
-        return productRepository.searchProduct(word);
+        return productRepository.searchProducts(word);
     }
 
 	public Optional<ProductModel> findProductById(Integer productId) {
@@ -103,5 +106,15 @@ public class ProductService {
 	    }
 	    return true; 
 	}
+    
+    public void ProductSearchService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List<ProductModel> searchProducts(String query) {
+        List<ProductModel> results = productRepository.searchProducts(query);
+        return results != null ? results : new ArrayList<>();
+    }
+
 
 }

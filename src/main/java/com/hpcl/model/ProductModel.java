@@ -28,6 +28,8 @@ public class ProductModel {
     @Column(name = "product_image")
     private String productImage;
     
+    @Column(name = "product_description")
+    private String productDescription;
     // Default Constructor
     public ProductModel() {
         super();
@@ -35,16 +37,23 @@ public class ProductModel {
     private int quantity;
 
     // Parameterized Constructor
-    public ProductModel(String productType, String productPrice, String productName, Integer productId, String productImage) {
+    public ProductModel(String productType, String productPrice, String productName, Integer productId, String productImage, String productDescription) {
         this.productType = productType;
         this.productPrice = productPrice;
         this.productName = productName;
         this.productId = productId;
         this.productImage = productImage;
+        this.productDescription = productDescription;
         this.quantity = 1;
      
     }
-    public int getQuantity() {
+    public String getProductDescription() {
+		return productDescription;
+	}
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
+	}
+	public int getQuantity() {
     	return quantity;
     }
     public void setQuantity(int quantity) {

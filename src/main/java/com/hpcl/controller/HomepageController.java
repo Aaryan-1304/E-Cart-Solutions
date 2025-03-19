@@ -78,7 +78,7 @@ public class HomepageController {
             if ((productName != null && !productName.isEmpty()) &&
                 (productPrice != null && !productPrice.isEmpty()) &&
                 (productType != null && !productType.isEmpty())) {
-
+            	
                 ProductModel newProduct = new ProductModel();
                 newProduct.setProductName(productName);
                 newProduct.setProductPrice(productPrice);
@@ -100,25 +100,41 @@ public class HomepageController {
         return "homepage";
     }
     @RequestMapping("/searchProducts")
-    public String searchProducts(@RequestParam("searchInput") String query ,Model model) {
+    public String searchProducts(@RequestParam(value = "searchInput", required = false) String searchInput, Model model) {
+        System.out.println(" Received search request for query: " + searchInput); // Debugging
+
         try {
-        	if (query != null || query.trim().isEmpty()) {
-        		 List<ProductModel> searchResults = productService.searchProduct(query);
-        		 model.addAttribute("searchResults", searchResults);
-                 model.addAttribute("query", query); 		
-                 
-                 if (searchResults.isEmpty()) {
-                     model.addAttribute("searchMessage", "No products found matching your search.");
-                 }
-            }else {
-	        		model.addAttribute("searchResults", new ArrayList<>());
-	                model.addAttribute("searchMessage", "Please enter a search term.");
-	        } 
-       }catch (Exception e) {
-            model.addAttribute("error", "Unable to fetch products at this time");
+            if (searchInput == null || searchInput.trim().isEmpty()) {
+                System.out.println("Search Input is empty");
+                model.addAttribute("searchResults", new ArrayList<>());
+                model.addAttribute("searchMessage", "Please enter a search input.");
+            } else {
+                System.out.println("Calling productService.searchProduct()...");
+                List<ProductModel> searchResults = productService.searchProduct(searchInput);
+                System.out.println("Search results size: " + searchResults.size()); // Debugging
+
+                model.addAttribute("searchResults", searchResults);
+                model.addAttribute("searchedInput", searchInput);
+
+                if (searchResults.isEmpty()) {
+                    model.addAttribute("searchMessage", "No products found matching your search.");
+                }
+            }
+            
+            return "homepage";
+     
+        } catch (Exception e) {
+            System.err.println("Error in search: " + e.getMessage());
+            e.printStackTrace();
+            
+            model.addAttribute("errorMessage", "An error occurred while searching. Please try again.");
+            return "errorPage";
         }
-        return "homepage";
     }
+        @RequestMapping("/")
+        public String home(Model model) {
+            return "homepage";
+        }
     
     @GetMapping("/expensiveProducts")
     @PostMapping("/expensiveProducts")
@@ -165,7 +181,7 @@ public class HomepageController {
     @RequestMapping("/homepage")
     public String homepage(Model model) {
         try {
-            List<ProductModel> topThreeProducts = productService.findTop3ExpensiveProducts();
+        	List<ProductModel> topThreeProducts = productService.findTop3ExpensiveProducts();
             model.addAttribute("topThreeProducts", topThreeProducts);
             
             if(topThreeProducts.isEmpty()) {
@@ -231,6 +247,4 @@ public class HomepageController {
 
         return "form";
     }
-
-
 }

@@ -54,6 +54,7 @@ public class CartController {
         @RequestParam(name = "productType", required = false) String productType,
         @RequestParam(name = "productPrice", required = false) String productPrice,
         @RequestParam(name = "productImage", required = false) String productImage,
+        @RequestParam(name = "productDescription", required = false) String productDescription,
         
         Model model, HttpSession session, RedirectAttributes rAttr) {
 
@@ -66,7 +67,7 @@ public class CartController {
                 ProductModel existingProduct = cart.get(productId);
                 existingProduct.setQuantity(existingProduct.getQuantity() + 1);
             }else {
-                ProductModel product = new ProductModel(productType, productPrice, productName, productId, productImage);
+                ProductModel product = new ProductModel(productType, productPrice, productName, productId, productImage, productDescription);
                 cart.put(productId, product);
             }
             session.setAttribute("cart", cart);
